@@ -9,8 +9,9 @@ if(isset($_POST['add_product'])){
    $p_image = $_FILES['p_image']['name'];
    $p_description = $_POST['description'];
    $p_stock = $_POST['p_stock'];
+   $p_description_txt = $_POST['p_description'];
 
-   $insert_query = mysqli_query($con, "INSERT INTO `products`(product_name, description, price, image,total_stocks) VALUES('$p_name','$p_description', '$p_price', '$p_image','$p_stock')") or die('query failed');
+   $insert_query = mysqli_query($con, "INSERT INTO `products`(product_name, description, price, image,total_stocks, description_txt) VALUES('$p_name','$p_description', '$p_price', '$p_image','$p_stock', '$p_description_txt')") or die('query failed');
 
    if($insert_query){
       $message[] = 'product added succesfully';
@@ -26,10 +27,11 @@ if(isset($_POST['update'])){
          $update_descritpion = $_POST['update_description'];
          $update_p_image = $_FILES['update_p_image']['name'];
          $update_stocks = $_POST['update_stocks'];
+         $update_description_txt = $_POST['update_description_txt'];
                if(!empty($update_p_image)){
-               $update_query = mysqli_query($con, "UPDATE `products` SET product_name = '$update_p_name', description = '$update_descritpion', price = '$update_p_price', image = '$update_p_image', total_stocks = '$update_stocks' WHERE product_id = '$update_p_id'");
+               $update_query = mysqli_query($con, "UPDATE `products` SET product_name = '$update_p_name', description = '$update_descritpion', price = '$update_p_price', image = '$update_p_image', total_stocks = '$update_stocks', description_txt = '$update_description_txt' WHERE product_id = '$update_p_id'");
                }else{
-               $update_query = mysqli_query($con, "UPDATE `products` SET product_name = '$update_p_name', description = '$update_descritpion', price = '$update_p_price', total_stocks = '$update_stocks' WHERE product_id = '$update_p_id'");
+               $update_query = mysqli_query($con, "UPDATE `products` SET product_name = '$update_p_name', description = '$update_descritpion', price = '$update_p_price', total_stocks = '$update_stocks', description_txt = '$update_description_txt' WHERE product_id = '$update_p_id'");
                }
          if($update_query){
             $message[] = 'product updated succesfully';
@@ -216,15 +218,17 @@ if(isset($_GET['authentication_update'])){
 ?>
 
    <div class='edit-form-container'>
-         <div class='edit-img'>
-            <img src="prod/<?php echo $fetch_edit['image']; ?>" alt="" class = "image">
-         </div>
+      
+      <img src="prod/<?php echo $fetch_edit['image']; ?>" alt="" class="edit-img">
       <form method="post" class="edit-product-form" enctype="multipart/form-data">
+
       <p id = "edit">edit product</p>
       <input type="hidden" name="update_p_id" value="<?php echo $fetch_edit['product_id']; ?>"> 
       <input type="text" class="box" required name="update_p_name" value="<?php echo $fetch_edit['product_name']; ?>">
       <input type="text" class="box" required name="update_p_price" value="<?php echo $fetch_edit['price']; ?>">
       <input type="text" class="box" required name="update_stocks" value="<?php echo $fetch_edit['total_stocks']; ?>">
+      <textarea class="box" required name="update_description_txt" rows=5><?php echo $fetch_edit['description_txt']; ?></textarea>
+
 
       <h5>DESCRIPTION </h5>
          <select name="update_description" class = "box">
@@ -235,6 +239,7 @@ if(isset($_GET['authentication_update'])){
                <option name = "donuts-muffin" value="donuts-muffin">Donuts & Muffins</option>
                <option name = "box-specials" value="box-specials">Box Specials</option>
             </select>   
+      <h5>IMAGE</h5>
       <input type="file" class="box" name="update_p_image" accept="image/png, image/jpg, image/jpeg" value="<?php echo $fetch_edit['image']; ?>">
       <input type="submit" value="update the prodcut" name="update" class="btn">
       <input type="submit" value="cancel" name="cancel" id="close-edit" class="option-btn">
@@ -261,13 +266,13 @@ if(isset($_GET['delete'])){
 ?>
       <div class='order-message-container'>
       <form class="add-product-form" action="includes/login.inc.php" method="post">
+         <button id = "btn-close">&times;</button>
       <p id = "edit">AUTHENTICATION</p>
       <input type="hidden" name="delete_p_id" value="<?php echo $fetch_delete['product_id']; ?>"> 
       <input type="text" name="mailuid" placeholder="Username" class = "box"> 
       <input id="password" type="password" name="password" placeholder="Password" class = "box"><br>
   
       <input type="submit" value="delete the prodcut" name="delete_product" class="btn">
-      <input type="submit" value="cancel" name="cancel" id="close-edit" class="option-btn">
 
       <?php
       
@@ -291,13 +296,13 @@ if(isset($_GET['edit'])){
 ?>
       <div class='order-message-container'>
       <form class="add-product-form" action="includes/login.inc.php" method="post">
+      <button id = "btn-close">&times;</button>
       <p id = "edit">AUTHENTICATION</p>
       <input type="hidden" name="update_p_id" value="<?php echo $fetch_update['product_id']; ?>"> 
       <input type="text" name="mailuid" placeholder="Username" class = "box"> 
       <input id="password" type="password" name="password" placeholder="Password" class = "box"><br>
   
       <input type="submit" value="update the prodcut" name="update_product" class="btn">
-      <input type="submit" value="cancel" name="cancel" id="close-edit" class="option-btn">
 
       <?php
       
@@ -363,7 +368,7 @@ if(isset($_GET['edit'])){
    <input type="text" name="p_name" placeholder="Product Name" class = "box" required>
    <input type="text" name="p_price" min="0" placeholder="Product Price" class = "box" required>
    <input type="text" name="p_stock" min="0" placeholder="Product Stocks" class = "box" required>
-   <textarea name="p_description" min="0" placeholder="Description about the product" class = "box" required></textarea>
+   <textarea name="p_description" min="0" placeholder="Description about the product" class = "box" rows=5 required></textarea>
             <h5>&nbsp;&nbsp;description of the product</h5>
             <select name="description" class = "box">
                <option name = "best-seller" value="best-seller">Best Seller</option>
