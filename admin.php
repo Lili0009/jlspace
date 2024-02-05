@@ -363,7 +363,7 @@ if(isset($_GET['edit'])){
    <input type="text" name="p_name" placeholder="Product Name" class = "box" required>
    <input type="text" name="p_price" min="0" placeholder="Product Price" class = "box" required>
    <input type="text" name="p_stock" min="0" placeholder="Product Stocks" class = "box" required>
-
+   <textarea name="p_description" min="0" placeholder="Description about the product" class = "box" required></textarea>
             <h5>&nbsp;&nbsp;description of the product</h5>
             <select name="description" class = "box">
                <option name = "best-seller" value="best-seller">Best Seller</option>
