@@ -88,6 +88,10 @@ if(isset($_POST['add_to_cart'])){
   .small-font {
     font-size: 10px; 
   }
+  .image:hover{
+   transform: scale(1.2);
+   z-index: 2;
+  }
 </style>
 
 
@@ -189,7 +193,9 @@ if(isset($message)){
 
       <form action="" method="post">
          <div class="box">
-            <img src="prod/<?php echo $fetch_product['image']; ?>" alt="">
+            <div class = "image">
+               <img src="prod/<?php echo $fetch_product['image']; ?>" alt="">
+            </div>
             <h3><?php echo $fetch_product['product_name']; ?></h3> 
             <div class="price">P<?php echo number_format($fetch_product['price'], 2, '.',','); ?></div>
             <input type="hidden" name="product_name" value="<?php echo $fetch_product['product_name']; ?>">
@@ -243,7 +249,9 @@ if(isset($message)){
 
       <form action="" method="post">
          <div class="box">
-            <img src="prod/<?php echo $fetch_product['image']; ?>" >
+            <div class = "image">
+               <img src="prod/<?php echo $fetch_product['image']; ?>" alt="">
+            </div>            
             <h3><?php echo $fetch_product['product_name']; ?></h3>
             <div class="price">P<?php echo number_format($fetch_product['price'], 2, '.',','); ?></div>
             <input type="hidden" name="product_name" value="<?php echo $fetch_product['product_name']; ?>">
@@ -297,7 +305,9 @@ if(isset($message)){
 
       <form action="" method="post">
          <div class="box">
-            <img src="prod/<?php echo $fetch_product['image']; ?>" alt="">
+            <div class = "image">
+               <img src="prod/<?php echo $fetch_product['image']; ?>" alt="">
+            </div>            
             <h3><?php echo $fetch_product['product_name']; ?></h3>
             <div class="price">P<?php echo number_format($fetch_product['price'], 2, '.',','); ?></div>
             <input type="hidden" name="product_name" value="<?php echo $fetch_product['product_name']; ?>">
@@ -351,7 +361,9 @@ if(isset($message)){
 
       <form action="" method="post">
          <div class="box">
-            <img src="prod/<?php echo $fetch_product['image']; ?>" alt="">
+            <div class = "image">
+               <img src="prod/<?php echo $fetch_product['image']; ?>" alt="">
+            </div>            
             <h3><?php echo $fetch_product['product_name']; ?></h3>
             <div class="price">P<?php echo number_format($fetch_product['price'], 2, '.',','); ?></div>
             <input type="hidden" name="product_name" value="<?php echo $fetch_product['product_name']; ?>">
@@ -406,7 +418,9 @@ if(isset($message)){
 
       <form action="" method="post">
          <div class="box">
-            <img src="prod/<?php echo $fetch_product['image']; ?>" alt="">
+         <div class = "image">
+               <img src="prod/<?php echo $fetch_product['image']; ?>" alt="">
+            </div>
             <h3><?php echo $fetch_product['product_name']; ?></h3>
             <div class="price">P<?php echo number_format($fetch_product['price'], 2, '.',','); ?></div>
             <input type="hidden" name="product_name" value="<?php echo $fetch_product['product_name']; ?>">
