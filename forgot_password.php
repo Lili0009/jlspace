@@ -1,36 +1,3 @@
-<?php
-session_start();
-if (!isset($_SESSION['login_attempts'])) {
-    $_SESSION['login_attempts'] = 0;
-}
-
-// Function to check if the user has exceeded the maximum login attempts
-function hasExceededLoginAttempts() {
-    return $_SESSION['login_attempts'] >= 3;
-}
-
-// Function to set a timeout for subsequent login attempts after 3 failed attempts
-function setLoginAttemptTimeout() {
-    $_SESSION['login_timeout'] = time() + 30; // Set timeout for 30 seconds
-}
-
-// Function to check if the login attempt is within the timeout period
-function isLoginAttemptAllowed() {
-    return !isset($_SESSION['login_timeout']) || $_SESSION['login_timeout'] <= time();
-}
-
-// Function to reset login attempt counter
-function resetLoginAttempts() {
-    $_SESSION['login_attempts'] = 0;
-    unset($_SESSION['login_timeout']);
-}
-// Function to check if the password is at least 8 characters long
-function isPasswordValid($password) {
-    return strlen($password) >= 8;
-}
-// Increment login attempt counter
-$_SESSION['login_attempts']++;
-?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,11 +8,12 @@ $_SESSION['login_attempts']++;
 <body>
  
 <style type="text/css">
+    /* Your CSS Styles */
     *{
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        font-family: "Poppins", san-serif;
+        font-family: "Poppins", sans-serif;
     }
     body{
         background: linear-gradient(90deg, #ecffdc, #749f8d);
@@ -58,6 +26,7 @@ $_SESSION['login_attempts']++;
         border-radius: 10px;
         text-align: center;
         box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+        position: relative; /* Add position relative */
     }
     h1{
         font-size: 1.3rem;
@@ -72,25 +41,6 @@ $_SESSION['login_attempts']++;
         margin-bottom: 0px;
         border-radius: 20px;
         background: #e4e4e4;
-    }
-    .password-container {
-        position: relative;
-    }
-    .password-container input {
-        width: 92%;
-        outline: none;
-        border: 1px solid #fff;
-        padding: 12px 20px;
-        margin-bottom: 10px;
-        border-radius: 20px;
-        background: #e4e4e4;
-    }
-    .password-container i {
-        position: absolute;
-        right: 20px;
-        top: 40%;
-        transform: translateY(-50%);
-        cursor: pointer;
     }
     button{
         font-size: 1rem;
@@ -107,108 +57,99 @@ $_SESSION['login_attempts']++;
     button:hover{
         background: #A9A9A9;
     }
-    input:focus{
-        border: 1px solid rgb(192, 192, 192)
+
+    /* Modal styles */
+    .modal-wrapper {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;
     }
-    .member{
-        font-size: 0.8rem;
-        margin-top: 1.4rem;
-        color: #636363;
+
+    .modal-content {
+        background-color: white;
+        width: 300px;
+        padding: 20px;
+        border-radius: 10px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
-    .member a{
-        color: #385b4f;
-        text-decoration: none;
+    .modal-button:hover {
+        background-color: #A9A9A9;
     }
-    .member .fa{
-        color: #6F4E37;
-    }
-    .back-button {
-        font-size: 1rem;
-        margin-top: 1rem;
-        padding: 10px 0;
-        border-radius: 20px;
-        outline: none;
-        border: none;
-        width: 90%;
-        color: #fff;
-        cursor: pointer;
-        background: #385b4f;
-    }
-    .back-button:hover {
-        background: #A9A9A9;
+
+    .error-message {
+        color: red;
+        font-size: 0.6rem;
+        margin-top: 5px;
+        display: none;
     }
 </style>
  
 <div class="wrapper">
     <h1>Reset password</h1>
 
-    <form class="form-sign-up" action="includes/forgot.inc.php" method="post">
-        <div class="password-container">
-            <input id="email" type="text" name="email" placeholder="Email">
+    <form class="form-sign-up" id="resetForm" action="email_verification.php" method="post">
+        <div class="otp-container">
+            <input id="email" type="email" name="email" placeholder="Email" required>
+            <p class="error-message" id="emailErrorMessage">Please enter your email.</p>
+            <button type="button" id="generateOTP">Get OTP</button>
         </div>
-        <div class="password-container">
-            <input id="password" type="password" name="password" placeholder="New password">
-            <i class="fa fa-eye" id="togglePassword"></i>
-        </div>
-        <div class="password-container">
-            <input id="confirmPassword" type="password" name="confirmPassword" placeholder="Confirm password">
-            <i class="fa fa-eye" id="toggleConfirmPassword"></i>
-            <?php 
-        if (isset($_GET['error']) && $_GET['error'] === 'invalidpassword'): ?>
-            <p style="color: red; font-size: 10px"><br>Password must be at least 8 characters long.</p>
-        <?php endif; ?>
-        </div>
-        <button type="submit" id="button" name="resetPassword">Reset password</button><br>
-
-        <?php 
-        if (hasExceededLoginAttempts() && !isLoginAttemptAllowed()): ?>
-            <p>Login attempts exceeded. Please wait for <?php echo ($_SESSION['login_timeout'] - time()); ?> seconds before trying again.</p>
-        <?php endif; ?>
+        <input type="hidden" id="otp" name="otp"> <!-- Hidden field to store OTP -->
+        <div class="otp-timer" id="otpTimer"></div>
+        
+        <p id="loginAttemptsError" style="display: none;">Login attempts exceeded. Please wait for <span id="timeoutRemaining"></span> seconds before trying again.</p>
     </form>
 
-    <button class="back-button" onclick="goBack()">Cancel</button>
+    <button class="back-button" id="cancelButton">Cancel</button>
 
-    <script>
-        function goBack() {
-            window.history.back();
+    <!-- Modal wrapper -->
+    <div id="customModal" class="modal-wrapper">
+        <div class="modal-content">
+            <p>Are you sure you want to cancel?</p>
+            <button class="modal-button" id="confirmYesButton">Yes</button>
+            <button class="modal-button" id="confirmNoButton">No</button>
+        </div>
+    </div>
+
+<script>
+    document.getElementById('cancelButton').addEventListener('click', function() {
+        openModal();
+    });
+
+    document.getElementById('confirmYesButton').addEventListener('click', function() {
+        closeModal();
+        window.location.href = "login.php"; // User confirmed, go back to the login page
+    });
+
+    document.getElementById('confirmNoButton').addEventListener('click', function() {
+        closeModal();
+    });
+
+    document.getElementById('generateOTP').addEventListener('click', function() {
+        var emailInput = document.getElementById('email');
+        var errorMessage = document.getElementById('emailErrorMessage');
+        if (emailInput.value.trim() !== '') { // Check if email field is not empty
+            document.getElementById('resetForm').submit(); // Submit the form
+        } else {
+            errorMessage.style.display = 'block'; // Show error message
         }
+    });
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const passwordInput = document.getElementById('password');
-            const confirmPasswordInput = document.getElementById('confirmPassword');
-            const togglePassword = document.getElementById('togglePassword');
-            const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+    function openModal() {
+        document.getElementById('customModal').style.display = 'block';
+    }
 
-            // Initially, set the password input to 'text' and the eye to 'fa-eye-slash'
-            passwordInput.type = 'password';
-            togglePassword.classList.remove('fa-eye');
-            togglePassword.classList.add('fa-eye-slash');
-
-            confirmPasswordInput.type = 'password';
-            toggleConfirmPassword.classList.remove('fa-eye');
-            toggleConfirmPassword.classList.add('fa-eye-slash');
-
-            togglePassword.addEventListener('click', function () {
-                togglePasswordVisibility(passwordInput, togglePassword);
-            });
-
-            toggleConfirmPassword.addEventListener('click', function () {
-                togglePasswordVisibility(confirmPasswordInput, toggleConfirmPassword);
-            });
-
-            function togglePasswordVisibility(inputField, toggleIcon) {
-                if (inputField.type === 'password') {
-                    inputField.type = 'text';
-                    toggleIcon.classList.remove('fa-eye-slash');
-                    toggleIcon.classList.add('fa-eye');
-                } else {
-                    inputField.type = 'password';
-                    toggleIcon.classList.remove('fa-eye');
-                    toggleIcon.classList.add('fa-eye-slash');
-                }
-            }
-        });
-    </script>
+    function closeModal() {
+        document.getElementById('customModal').style.display = 'none';
+    }
+</script>
 </div>
 </body>
-      </Html>
+</html>

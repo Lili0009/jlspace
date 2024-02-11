@@ -1,41 +1,3 @@
-<?php
-session_start();
-
-// Check if the login form is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Your existing login validation code goes here
-
-    // Assuming your login validation is something like this:
-    $username = $_POST['mailuid'];
-    $password = $_POST['password'];
-
-    // Replace this with your actual login validation logic
-    if ($username == 'correct_username' && $password == 'correct_password') {
-        // Successful login
-        // Reset login attempts counter
-        $_SESSION['login_attempts'] = 0;
-    } else {
-        // Failed login
-        if (!isset($_SESSION['login_attempts'])) {
-            $_SESSION['login_attempts'] = 1;
-        } else {
-            $_SESSION['login_attempts']++;
-        }
-
-        // Check if the maximum login attempts are reached
-        $max_attempts = 3;
-        if ($_SESSION['login_attempts'] >= $max_attempts) {
-            // Redirect to the password reset page
-            header("Location: forgot_password.php");
-            exit();
-        } else {
-            // Incorrect password message
-            header("Location: login.php?error=wrongpwd");
-            exit();
-        }
-    }
-}
-?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,6 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
  
 <style type="text/css">
+    /* Your CSS Styles */
     *{
         margin: 0;
         padding: 0;
@@ -161,15 +124,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-size: 10px;
             margin-top: 5px;
         }
-</style>
+    .popup-wrapper {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
 
+    .popup-content {
+        background-color: white;
+        width: 300px;
+        padding: 20px;
+        border-radius: 10px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>
 
 <div class="wrapper">
     <h1>LOG IN</h1>
 
     <form class="form-sign-up" action="includes/login.inc.php" method="post">
-        <input id="text" type="text" name="mailuid" placeholder="Username"required><br><br>
-        <input id="password" type="password" name="password" placeholder="Password"required><br>
+        <input id="text" type="text" name="mailuid" placeholder="Username" required><br><br>
+        <input id="password" type="password" name="password" placeholder="Password" required><br>
         <div class="password-container">
             <i class="fa fa-eye" id="togglePassword"></i>
             <a href="#" class="forgot-password" onclick="showResetPasswordPopup()">Forgot Password?</a>
@@ -192,12 +175,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
          ?>
         <button type="submit" id="button" name="Login">LOG IN</button><br>
         <div class="member">
-
             <div class="member">
                 <br> Not a member? <a href="signup.php"><strong>REGISTER NOW</a></strong><br><br>
             </div>
     </form>
 </div>
+
+<div id="popupWrapper" class="popup-wrapper">
+    <div class="popup-content">
+        <p>Do you want to reset your password?</p>
+        <button onclick="proceedToForgotPassword()">OK</button>
+        <button onclick="closePopup()">Cancel</button>
+    </div>
+</div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const passwordInput = document.getElementById('password');
@@ -222,11 +213,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     });
 
     function showResetPasswordPopup() {
-        var confirmReset = confirm("Do you want to reset your password?");
-        if (confirmReset) {
-            // Redirect to the password reset page or perform other actions
-            window.location.href = "forgot_password.php";
-        }
+        document.getElementById('popupWrapper').style.display = 'block';
+    }
+
+    function closePopup() {
+        document.getElementById('popupWrapper').style.display = 'none';
+    }
+
+    function proceedToForgotPassword() {
+        // Redirect the user to forgot_password.php
+        window.location.href = 'forgot_password.php';
     }
 </script>
 </body>
