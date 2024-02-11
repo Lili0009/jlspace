@@ -217,7 +217,7 @@ if(isset($_GET['authentication_update'])){
       while($fetch_edit = mysqli_fetch_assoc($edit_query)){
 ?>
 
-   <div class='edit-form-container'>
+   <div class='edit-form-container' id="edit-form-container">
       
       <img src="prod/<?php echo $fetch_edit['image']; ?>" alt="" class="edit-img">
       <form method="post" class="edit-product-form" enctype="multipart/form-data">
@@ -302,7 +302,7 @@ if(isset($_GET['edit'])){
       <input type="text" name="mailuid" placeholder="Username" class = "box"> 
       <input id="password" type="password" name="password" placeholder="Password" class = "box"><br>
   
-      <input type="submit" value="update the prodcut" name="update_product" class="btn">
+      <input type="submit" value="update the product" name="update_product" class="btn">
 
       <?php
       

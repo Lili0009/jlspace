@@ -214,7 +214,6 @@ hr {
   border-radius: .5rem;
   padding:2rem;
   margin-left: auto;
-  margin-right: auto;
   margin-top: 15rem;
 }
 .edit-form-container #btn-close{
@@ -287,6 +286,14 @@ form input {
   margin-left: 10px;
 }
 
+.edit-img{
+  position: fixed;
+  left: 10vw;
+}
+
+body:has(#edit-form-container){
+  overflow-y: hidden;
+}
 
 
 
@@ -372,6 +379,7 @@ form input {
   position: relative;
   line-height: 60px;
   color: #555;
+  font-size: 30px;
 }
 .top-prod-title::after {
   content: "";

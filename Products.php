@@ -88,6 +88,9 @@ if(isset($_POST['add_to_cart'])){
   .small-font {
     font-size: 10px; 
   }
+  .image{
+   transition: .3s ease-in-out;
+  }
   .image:hover{
    transform: scale(1.2);
    z-index: 2;
