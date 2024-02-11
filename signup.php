@@ -161,7 +161,7 @@ session_start();
       <button type = "submit" id = "button" name = "Signup">SIGN UP</button><br><br>
  
       <div class="member">
-        Already a member? <a href="login.php">LOGIN HERE</a><br><br>
+        Already a member? <a href="login.php"><strong>LOGIN HERE</a></strong><br><br>
       </div>
     </form>
   </div>
