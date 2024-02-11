@@ -157,7 +157,11 @@ hr {
   color: #fff;
 }
 
-
+/* Home Today's Special */
+.home-products .box-container{
+    grid-template-columns: 1fr 1fr 1fr 1fr !important;
+}
+/* End of Home Today's Special*/
 
 /* FOR ADMIN PAGE*/
 
@@ -311,6 +315,7 @@ form input {
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
+  right: 25px;
 }
 
 .dropdown-content a {
@@ -454,7 +459,7 @@ html {
 }
 .products .box-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, 25rem);
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 1rem;
   justify-content: center;
 }

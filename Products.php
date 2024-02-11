@@ -194,10 +194,10 @@ if(isset($message)){
       <form action="" method="post">
          <div class="box">
             <div class = "image">
-               <img src="prod/<?php echo $fetch_product['image']; ?>" alt="">
+               <img src="prod/<?php echo $fetch_product['image']; ?>" alt="<?php echo $fetch_product['product_name']; ?>">
             </div>
             <h3><?php echo $fetch_product['product_name']; ?></h3> 
-            <div class="price">P<?php echo number_format($fetch_product['price'], 2, '.',','); ?></div>
+            <div class="price">₱<?php echo number_format($fetch_product['price'], 2, '.',','); ?></div>
             <input type="hidden" name="product_name" value="<?php echo $fetch_product['product_name']; ?>">
             <input type="hidden" name="product_price" value="<?php echo $fetch_product['price']; ?>">
             <input type="hidden" name="product_image" value="<?php echo $fetch_product['image']; ?>">
@@ -253,7 +253,7 @@ if(isset($message)){
                <img src="prod/<?php echo $fetch_product['image']; ?>" alt="">
             </div>            
             <h3><?php echo $fetch_product['product_name']; ?></h3>
-            <div class="price">P<?php echo number_format($fetch_product['price'], 2, '.',','); ?></div>
+            <div class="price">₱<?php echo number_format($fetch_product['price'], 2, '.',','); ?></div>
             <input type="hidden" name="product_name" value="<?php echo $fetch_product['product_name']; ?>">
             <input type="hidden" name="product_price" value="<?php echo $fetch_product['price']; ?>">
             <input type="hidden" name="product_image" value="<?php echo $fetch_product['image']; ?>">

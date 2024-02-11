@@ -76,33 +76,39 @@
 <br><br><br><br>
 
 <div class="small-container">
-	<h1 class = "top-prod-title">TODAY’S SPECIAL</h1>
-	<div class="row">
-				<div class="column">
-					<a href = "Products.php#specials"><img class = "img" src="prod/cake.png" alt="Cute cakes" style="width:60%" ></a>
-						<h3>Cute cakes</h3>
-						<p id = "price">P500.00</p>
-				</div>
+<section class="products home-products">
+   <h1 class="top-prod-title">Today's Special</h1>
 
-				<div class="column">
-				<a href = "Products.php#specials" ><img class = "img" src="prod/maca.png" alt="maca" style="width:60%" ></a>
-						<h3>Sweet macaroons</h3>
-						<p id = "price">P150.00</p>
-				</div>
-	</div>
+   <div class="box-container">
 
-	<div class="row">
-				<div class="column">
-				<a href = "Products.php#specials" ><img class = "img" src="prod/pan.png" alt="pan" style="width:60%" ></a>
-						<h3>Pannycakes</h3>
-						<p id = "price">P120.00</p>
-				</div>
-				<div class="column">
-				<a href = "Products.php#specials" ><img class = "img" src="prod/cherry.png" alt="cherry" style="width:60%" ></a>
-						<h3>Cherry coats</h3>
-						<p id = "price">P100.00</p>
-				</div>
-	</div>
+      <?php
+      
+      $select_products = mysqli_query($con, "SELECT * FROM products WHERE description = 'special' ORDER BY product_name ASC");
+      
+      if(mysqli_num_rows($select_products) > 0){
+         while($fetch_product = mysqli_fetch_assoc($select_products)){
+      ?>
+
+      <form action="" method="post">
+         <div class="box">
+            <div class = "image">
+               <a href="Products.php#specials"><img src="prod/<?php echo $fetch_product['image']; ?>" alt=""></a>
+            </div>            
+            <h3><?php echo $fetch_product['product_name']; ?></h3>
+            <div class="price">₱<?php echo number_format($fetch_product['price'], 2, '.',','); ?></div>
+            <input type="hidden" name="product_name" value="<?php echo $fetch_product['product_name']; ?>">
+            <input type="hidden" name="product_price" value="<?php echo $fetch_product['price']; ?>">
+            <input type="hidden" name="product_image" value="<?php echo $fetch_product['image']; ?>">
+         </div>
+      </form>
+      <?php
+         };
+      };
+      ?>
+
+   </div>
+</section>
+
 </div>
 
 
@@ -110,47 +116,3 @@
 <?php
 include "footer.php";
 ?>
-
-<!-- <body><br>
-<div class = "sale">
-	<h1 class = "newArrival">FRESHLY<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BAKED</h1>
-	<a href="Products.php#best-seller" class="explore-btn">Order Now &#8594;</a>
-</div>
-<br><br><br><br>
-
-<div class="small-container">
-	<h1 class = "top-prod-title">TODAY’S SPECIAL</h1>
-
-	/*<?php
-      $num = 0;
-      $select_products = mysqli_query($con, "SELECT * FROM products WHERE description = 'special' ORDER BY product_name ASC");
-      if(mysqli_num_rows($select_products) > 0){
-         while($fetch_product = mysqli_fetch_assoc($select_products)){
-      ?>
-
-	<div class="row">
-				<div class="column">
-				<a href = "Products.php" ><img class = "img" src="prod/<?php echo $fetch_product['image']; ?>"  style="width:60%"></a>
-				<h3><?php echo $fetch_product['product_name']; ?></h3>
-				<p id = "price">P<?php echo number_format($fetch_product['price'], 2, '.',','); ?></p>
-				</div>
-				
-				<div class="column">
-				<a href = "Products.php" ><img class = "img" src="prod/<?php echo $fetch_product['image']; ?>" style="width:60%"></a>
-				<h3><?php echo $fetch_product['product_name']; ?></h3>
-				<p id = "price">P<?php echo number_format($fetch_product['price'], 2, '.',','); ?></p>
-				</div>
-	</div>
-		 </div>
-	<?php
-         };
-      };
-      ?>
-
-
-
-<br><br>
-<?php
-include "footer.php";
-?>*/
--->
