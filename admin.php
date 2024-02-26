@@ -272,7 +272,7 @@ if(isset($_GET['delete'])){
       <input type="text" name="mailuid" placeholder="Username" class = "box"> 
       <input id="password" type="password" name="password" placeholder="Password" class = "box"><br>
   
-      <input type="submit" value="delete the prodcut" name="delete_product" class="btn">
+      <input type="submit" value="delete the prodcut" name="delete_product" class="btn" />
 
       <?php
       
@@ -302,7 +302,7 @@ if(isset($_GET['edit'])){
       <input type="text" name="mailuid" placeholder="Username" class = "box"> 
       <input id="password" type="password" name="password" placeholder="Password" class = "box"><br>
   
-      <input type="submit" value="update the product" name="update_product" class="btn">
+      <input type="submit" value="update the product" name="update_product" class="btn" />
 
       <?php
       
