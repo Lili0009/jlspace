@@ -95,6 +95,48 @@ if(isset($_POST['add_to_cart'])){
    transform: scale(1.2);
    z-index: 2;
   }
+  /* popup for image in products */
+  .popup {
+   display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 2;
+}
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black */
+    z-index: 1;
+}
+.show-overlay {
+    display: block;
+}
+
+.popup-text {
+    font-size: 14px;
+    color: black;
+}
+
+.show {
+    display: block;
+}
+.close {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  cursor: pointer;
+  color: black;
+}
+/* end of popup for image in products */
 </style>
 
 
@@ -188,7 +230,7 @@ if(isset($message)){
    <div class="box-container">
 
       <?php
-      
+
       $select_products = mysqli_query($con, "SELECT * FROM products WHERE description = 'best-seller' ORDER BY product_name ASC");
       if(mysqli_num_rows($select_products) > 0){
          while($fetch_product = mysqli_fetch_assoc($select_products)){
@@ -196,11 +238,16 @@ if(isset($message)){
 
       <form action="" method="post">
          <div class="box">
-            <div class = "image">
-               <img src="prod/<?php echo $fetch_product['image']; ?>" alt="<?php echo $fetch_product['product_name']; ?>">
+            <div class="image">
+               <img src="prod/<?php echo $fetch_product['image']; ?>" alt="Image" onclick="showDescription(<?php echo $fetch_product['product_id']; ?>)">
             </div>
+               <div id="popup-<?php echo $fetch_product['product_id']; ?>" class="popup">
+                  <span class="close" id="close-popup">&times;</span>
+                  <p><?php echo $fetch_product['description_txt']; ?></p>
+               </div>
+               <div id="overlay" class="overlay" onclick="hideDescription()"></div>
             <h3><?php echo $fetch_product['product_name']; ?></h3> 
-            <div class="price">₱<?php echo number_format($fetch_product['price'], 2, '.',','); ?></div>
+            <a href = "description.php"><div class="price">₱<?php echo number_format($fetch_product['price'], 2, '.',','); ?></div></a>
             <input type="hidden" name="product_name" value="<?php echo $fetch_product['product_name']; ?>">
             <input type="hidden" name="product_price" value="<?php echo $fetch_product['price']; ?>">
             <input type="hidden" name="product_image" value="<?php echo $fetch_product['image']; ?>">
@@ -312,7 +359,7 @@ if(isset($message)){
                <img src="prod/<?php echo $fetch_product['image']; ?>" alt="">
             </div>            
             <h3><?php echo $fetch_product['product_name']; ?></h3>
-            <div class="price">P<?php echo number_format($fetch_product['price'], 2, '.',','); ?></div>
+            <div class="price">₱<?php echo number_format($fetch_product['price'], 2, '.',','); ?></div>
             <input type="hidden" name="product_name" value="<?php echo $fetch_product['product_name']; ?>">
             <input type="hidden" name="product_price" value="<?php echo $fetch_product['price']; ?>">
             <input type="hidden" name="product_image" value="<?php echo $fetch_product['image']; ?>">
@@ -368,7 +415,7 @@ if(isset($message)){
                <img src="prod/<?php echo $fetch_product['image']; ?>" alt="">
             </div>            
             <h3><?php echo $fetch_product['product_name']; ?></h3>
-            <div class="price">P<?php echo number_format($fetch_product['price'], 2, '.',','); ?></div>
+            <div class="price">₱<?php echo number_format($fetch_product['price'], 2, '.',','); ?></div>
             <input type="hidden" name="product_name" value="<?php echo $fetch_product['product_name']; ?>">
             <input type="hidden" name="product_price" value="<?php echo $fetch_product['price']; ?>">
             <input type="hidden" name="product_image" value="<?php echo $fetch_product['image']; ?>">
@@ -425,7 +472,7 @@ if(isset($message)){
                <img src="prod/<?php echo $fetch_product['image']; ?>" alt="">
             </div>
             <h3><?php echo $fetch_product['product_name']; ?></h3>
-            <div class="price">P<?php echo number_format($fetch_product['price'], 2, '.',','); ?></div>
+            <div class="price">₱<?php echo number_format($fetch_product['price'], 2, '.',','); ?></div>
             <input type="hidden" name="product_name" value="<?php echo $fetch_product['product_name']; ?>">
             <input type="hidden" name="product_price" value="<?php echo $fetch_product['price']; ?>">
             <input type="hidden" name="product_image" value="<?php echo $fetch_product['image']; ?>">
@@ -461,3 +508,28 @@ if(isset($message)){
 <?php
 include "footer.php";
 ?>
+
+<!-- JavaScript to toggle popup display -->
+<script>
+function showDescription(id) {
+    var popup = document.getElementById('popup-' + id);
+    var overlay = document.getElementById('overlay');
+    popup.classList.toggle('show');
+    overlay.classList.toggle('show-overlay');
+}
+const closePopup = document.getElementById('close-popup');
+closePopup.addEventListener('click', () => {
+        termsPopup.style.display = 'none';
+    });
+
+    function hideDescription() {
+    var popup = document.querySelector('.popup.show');
+    var overlay = document.getElementById('overlay');
+    if (popup) {
+        popup.classList.remove('show');
+    }
+    if (overlay) {
+        overlay.classList.remove('show-overlay');
+    }
+}
+</script>

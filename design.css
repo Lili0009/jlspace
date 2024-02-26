@@ -492,6 +492,26 @@ html {
   font-size: 20px;
   color: #b87333;
 }
+/* end of top products */
+
+/* products description container*/
+.popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 10vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding: 10rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+  background-color: var(--dark-bg);
+  width: 100%;
+}
+/* end of products description container */
+
 
 /* CART */
 .message span {
@@ -554,6 +574,9 @@ html {
 .shopping-cart table .table-bottom {
   background-color: var(--bg-color);
 }
+/* end of products page */
+
+
 
 
 
