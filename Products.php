@@ -21,7 +21,34 @@ if(isset($_POST['add_to_cart'])){
 
 
 }
+
+
+if (isset($_SESSION['userId'])) {
+   $id = $_SESSION['userId'];
+
+   
+   $cartct = mysqli_query($con, "SELECT * FROM cart WHERE customer_id = $id");
+   $ct = mysqli_num_rows($cartct);
+
+   
+   if ($_SESSION['userUId'] == 'admin') {
+       $orderct = mysqli_query($con, "SELECT * FROM orders where CAST(date AS DATE) = CAST( curdate() AS DATE) AND order_status = 'Pending'");
+       $order_count = mysqli_num_rows($orderct);
+   } else {
+       $order_count = 0; 
+   }
+
+} else {
+   $ct = ' ';
+   $order_count = ' ';
+
+   echo "<script>
+       location.replace('login.php')
+       </script>";
+}
+
 ?>
+
 
 
 
@@ -99,11 +126,12 @@ if(isset($_POST['add_to_cart'])){
   .popup {
    display: none;
     position: fixed;
+    width: 100%;
+    height: 100vh;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0);;
-    background-color: #fff;
-    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
     padding: 20px;
     z-index: 9999;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -138,12 +166,22 @@ if(isset($_POST['add_to_cart'])){
    line-height: 1.5;
 }
 
+.popup_inner_wrapper {
+    position: absolute;
+    width: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 3rem;
+}
+
 .close {
    position: absolute;
-   top: 10px;
-   right: 10px;
+   top: 5px;
+   right: 15px;
    color: #888;
-   font-size: 24px;
+   font-size: 35px;
    cursor: pointer;
 }
 
@@ -292,8 +330,9 @@ if(isset($message)){
          <div class="image">
             <img src="prod/<?php echo $fetch_product['image']; ?>" alt="Image" onclick="showDescription(<?php echo $fetch_product['product_id']; ?>)">
          </div>
-
+          
          <div id="popup-<?php echo $fetch_product['product_id']; ?>" class="popup">
+         <div class="popup_inner_wrapper">
             <span class="close" onclick="closePopup(<?php echo $fetch_product['product_id']; ?>)">&times;</span>
                <div class="popup-content">
                   <img src="prod/<?php echo $fetch_product['image']; ?>" alt="Product Image">
@@ -301,6 +340,8 @@ if(isset($message)){
                   <p class="no-capitalization"><?php echo $fetch_product['description_txt']; ?></p>
                </div>
          </div>
+         </div>
+
             <h3><?php echo $fetch_product['product_name']; ?></h3> 
             <a href = "description.php"><div class="price">₱<?php echo number_format($fetch_product['price'], 2, '.',','); ?></div></a>
             <input type="hidden" name="product_name" value="<?php echo $fetch_product['product_name']; ?>">
