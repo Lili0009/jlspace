@@ -250,7 +250,6 @@ if(isset($message)){
     <form method="GET" action="search.php">
         <input type="text" class="search-box" name="query" placeholder="Search product" required>
         <button type="submit" class="search-button">Search</button>
-        <input type="submit"> <a href="#" onclick="history.back();">"Back"</a>
     </form>
 </div>
 
@@ -261,7 +260,7 @@ if (isset($_GET['query'])) {
 
 ?>
 <div class="container">
-
+<a href="javascript:history.go(-1)"><i class="fa fa-mail-reply" aria-hidden="true"></i></a>
 <section class="products">
 
    <h1 class="heading">Result for <?php echo $search; ?></h1>
@@ -356,8 +355,4 @@ closePopup.addEventListener('click', () => {
     }
 }
 
-
-function clearContent() {
-   document.getElementById('content').innerHTML = '';
-}
 </script>
