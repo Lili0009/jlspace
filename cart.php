@@ -155,10 +155,10 @@ if(isset($_GET['delete_all'])){
          else{
             ?>
             <div class='display-empty'>
-            <div class='info-empty'>
-            <h3>Your cart is empty!
-            <a href ="Products.php" class='btn'>Shop Now</a></h3>
-            </div>
+               <div class='info-empty'>
+                  <h3>Your cart is empty!
+                  <a href ="Products.php" class='btn'>Shop Now</a></h3>
+               </div>
             </div>
          <?php
          }
