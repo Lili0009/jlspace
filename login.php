@@ -53,16 +53,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         font-family: "Poppins", san-serif;
     }
 
-    body {
-	background: #A67051;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	font-family: 'Montserrat', sans-serif;
-	height: 100vh;
-	margin: -20px 0 50px;
-}
+    body{
+        background: linear-gradient(90deg, #ecffdc, #749f8d);
+    }
 
     .wrapper{
         width: 330px;
@@ -168,7 +161,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-size: 10px;
             margin-top: 5px;
         }
-        
 </style>
 
 
@@ -198,7 +190,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
          ?>
-        <button type="submit" id="button" name="Login" >LOG IN</button><br>
+        <button type="submit" id="button" name="Login">LOG IN</button><br>
         <div class="member">
 
             <div class="member">
@@ -236,7 +228,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             window.location.href = "forgot_password.php";
         }
     }
-
 </script>
 </body>
 </html>
