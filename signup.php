@@ -7,6 +7,7 @@ session_start();
 <head>
   <title>Signup</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stykesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
  
@@ -19,13 +20,13 @@ session_start();
   }
  
   body{
-    background: linear-gradient(90deg, #ecffdc, #749f8d);
+    background: #A67051;
   }
  
   .wrapper{
-    width: 330px;
+    width: 1000px;
     padding: 2rem 1rem;
-    margin: 50px auto;
+    margin: 30px auto;
     background-color: #fff;
     border-radius: 10px;
     text-align: center;
@@ -39,13 +40,14 @@ session_start();
   }
  
   form input{
-    width: 92%;
+    width: 60%;
     outline: none;
     border: 1px solid #fff;
     padding: 12px 20px;
     margin-bottom: 10px;
     border-radius: 20px;
     background: #e4e4e4;
+    
   }
  
   button{
@@ -58,7 +60,7 @@ session_start();
     width: 90%;
     color: #fff;
     cursor: pointer;
-    background: #385b4f;
+    background: #385b4f; 
   }
   button:hover{
     background: #A9A9A9;
@@ -114,15 +116,20 @@ session_start();
     <h1>SIGN UP</h1>
  
     <form class = "form-sign-up" action = "includes/signup.inc.php" method = "post">
-      <input id="text" type="text" name="uname" placeholder = "Username"><br><br>
-      <input id="text" type="text" name="email" placeholder = "Email"><br><br>
-      <input id="text" type="password" name="password" placeholder = "Create Password"><br><br>
-      <input id="text" type="password" name="repassword" placeholder="Confirm Password"><br><br>
+      <input id="text" type="text" name="fname" placeholder = " Firstname" required><br><br>
+      <input id="text" type="text" name="lname" placeholder = " Lastname" required><br><br>
+      <input id="text" type="text" name="uname" placeholder = " Username" required><br><br>
+      <input id="text" type="email" name="email" placeholder = "Email" required><br><br>
+      <input id="text" type="number" name="phone" placeholder = "Phone Number" required pattern="[0-9]{11}" oninvalid="this.setCustomValidity('Enter 11 Digits Number')" oninput="this.setCustomValidity('')"><br><br>
+      <input id="text" type="text" name="address" placeholder = "Address" required><br><br>
+      <input id="text" type="password" name="password" placeholder = "Password" required><br><br>
+      <input id="text" type="password" name="repassword" placeholder="Confirm Password" required><br><br>
       <div class="terms">
       <input type="checkbox" id=checkbox>
       <label for="checkbox">I agree to the <a href="#" id="terms-link">Terms & Conditions</a>.</label>
-
+      
       </div>
+      
       <?php
       if(isset($_GET['error'])){
  
@@ -159,6 +166,7 @@ session_start();
       ?>
  
       <button type = "submit" id = "button" name = "Signup">SIGN UP</button><br><br>
+      
  
       <div class="member">
         Already a member? <a href="login.php">LOGIN HERE</a><br><br>
