@@ -204,7 +204,7 @@
         <label for="digit3"><input type="text" id="digit3" maxlength="1" oninput="validateInput(event, 3)" onkeyup="moveToNextInput(event, 3)" onkeydown="deleteInput(event, 3)"><span></span></label>
         <label for="digit4"><input type="text" id="digit4" maxlength="1" oninput="validateInput(event, 4)" onkeyup="moveToNextInput(event, 4)" onkeydown="deleteInput(event, 4)"><span></span></label>
       </div>
-      <div class="cta"><button type="submit">Send</button></div><br>
+      <div class="cta"><button type="submit">Verify code</button></div><br>
     </form>
     <p class="resend-text">Didn't receive the code? <a href="#">Resend</a></p>
     <div class="timer" id="timer"></div>

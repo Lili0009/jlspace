@@ -25,9 +25,9 @@ if(isset($_POST['Login'])){
             if($row = mysqli_fetch_assoc($result)){
                 $pwdCheck = password_verify($password, $row['pwd']);
 
-                if($pwdCheck == false){
-                    header("Location: ../login.php?error=wrongpwd");
-                    exit(); 
+                if ($pwdCheck == false) {
+                    header("Location: ../login.php?error=wrongpwd&mailuid=" . urlencode($mailuid));
+                    exit();                
                 }
                 else if($pwdCheck == true){
                     if($row['cidCustomer'] == 'admin'){
@@ -54,6 +54,7 @@ if(isset($_POST['Login'])){
             }
             else{
                 header("Location: ../login.php?error=nouser");
+                
                 exit(); 
             }
         }

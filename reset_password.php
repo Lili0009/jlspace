@@ -140,10 +140,11 @@ $_SESSION['login_attempts']++;
 </style>
  
 <div class="wrapper">
-    <h1>Change password</h1>
+    <h1>Reset password</h1>
 
     <form class="form-sign-up" action="includes/forgot.inc.php" method="post">
         <div class="password-container">
+            <input id="email" type="text" name="email" placeholder="Email">
         </div>
         <div class="password-container">
             <input id="password" type="password" name="password" placeholder="New password">
@@ -157,7 +158,7 @@ $_SESSION['login_attempts']++;
             <p style="color: red; font-size: 10px"><br>Password must be at least 8 characters long.</p>
         <?php endif; ?>
         </div>
-        <button type="submit" id="button" name="resetPassword">Update</button><br>
+        <button type="submit" id="button" name="resetPassword">Reset password</button><br>
 
         <?php 
         if (hasExceededLoginAttempts() && !isLoginAttemptAllowed()): ?>

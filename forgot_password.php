@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Reset password</title>
+    <title>Forgot password</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet"/>
 </head>
@@ -93,7 +93,7 @@
 </style>
  
 <div class="wrapper">
-    <h1>Reset password</h1>
+    <h1>Forgot password</h1>
 
     <form class="form-sign-up" id="resetForm" action="email_verification.php" method="post">
         <div class="otp-container">

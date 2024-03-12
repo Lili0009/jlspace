@@ -1,9 +1,9 @@
 <?php
 
-$dbhost = "localhost";
+$dbhost = "localhost:3307";
 $dbuser = "root";
 $dbpass = "";
-$dbname = "jlspace_db";
+$dbname = "jlspace";
 $con = mysqli_connect($dbhost,$dbuser,$dbpass,$dbname);
 if(!$con)
 {

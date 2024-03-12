@@ -17,7 +17,7 @@
     }
 
     body{
-        background: linear-gradient(90deg, #ecffdc, #749f8d);
+        background: linear-gradient(90deg, #e5d3b3, #d2b48c);
     }
 
     .wrapper{
@@ -29,11 +29,15 @@
         text-align: center;
         box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
     }
-
+   
     h1{
         font-size: 2rem;
         color: #07001f;
         margin-bottom: 1.2rem;
+    }
+    img {
+        width: 100px; /* Adjust according to your image size */
+        margin-bottom: 1rem; /* Add some spacing between the image and the form */
     }
 
     form input{
@@ -146,12 +150,14 @@
         transform: translate(-50%, -50%);
     }
 </style>
-
+<?php
+session_start();
+?>
 <div class="wrapper">
+<img src="logo.png" alt="Login Image">
     <h1>LOG IN</h1>
-
     <form class="form-sign-up" action="includes/login.inc.php" method="post">
-        <input id="text" type="text" name="mailuid" placeholder="Username" required><br><br>
+    <input id="text" id="username" type="text" name="mailuid" placeholder="Username" value="<?php echo isset($_GET['mailuid']) ? htmlspecialchars($_GET['mailuid']) : ''; ?>" required><br><br>
         <input id="password" type="password" name="password" placeholder="Password" required><br>
         <div class="password-container">
             <i class="fa fa-eye" id="togglePassword"></i>
@@ -224,6 +230,8 @@
         // Redirect the user to forgot_password.php
         window.location.href = 'forgot_password.php';
     }
+
+    
 </script>
 </body>
 </html>

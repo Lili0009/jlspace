@@ -20,13 +20,13 @@ if (isset($_POST['resetPassword'])) {
 
     // Check if the password and confirm password match
     if ($password !== $confirmPassword) {
-        header("Location: ../forgot_password.php?error=passwordnomatch");
+        header("Location: ../reset_password.php?error=passwordnomatch");
         exit();
     }
 
     // Check if the password meets the required criteria
     if (!isPasswordValid($password)) {
-        header("Location: ../forgot_password.php?error=invalidpassword");
+        header("Location: ../reset_password.php?error=invalidpassword");
         exit();
     }
 
