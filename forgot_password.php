@@ -16,7 +16,7 @@
         font-family: "Poppins", sans-serif;
     }
     body{
-        background: linear-gradient(90deg, #ecffdc, #749f8d);
+        background: #ffebcd;
     }
     .wrapper{
         width: 330px;
@@ -50,9 +50,11 @@
         outline: none;
         border: none;
         width: 90%;
-        color: #fff;
+        color: #333;
+        font-weight:bold;
+        
         cursor: pointer;
-        background: #385b4f;
+        background: #ffebcd;
     }
     button:hover{
         background: #A9A9A9;

@@ -48,7 +48,7 @@ $_SESSION['login_attempts']++;
         font-family: "Poppins", san-serif;
     }
     body{
-        background: linear-gradient(90deg, #ecffdc, #749f8d);
+        background: #ffebcd;
     }
     .wrapper{
         width: 330px;
@@ -100,9 +100,10 @@ $_SESSION['login_attempts']++;
         outline: none;
         border: none;
         width: 90%;
-        color: #fff;
+        color: #333;
+        font-weight:bold;
         cursor: pointer;
-        background: #385b4f;
+        background: #ffebcd;
     }
     button:hover{
         background: #A9A9A9;
@@ -130,9 +131,10 @@ $_SESSION['login_attempts']++;
         outline: none;
         border: none;
         width: 90%;
-        color: #fff;
+        color: #333;
+        font-weight:bold;
         cursor: pointer;
-        background: #385b4f;
+        background: #ffebcd;
     }
     .back-button:hover {
         background: #A9A9A9;
@@ -142,7 +144,7 @@ $_SESSION['login_attempts']++;
 <div class="wrapper">
     <h1>Reset password</h1>
 
-    <form class="form-sign-up" action="includes/forgot.inc.php" method="post">
+    <form class="form-sign-up" action="includes/reset.inc.php" method="post">
         <div class="password-container">
             <input id="email" type="text" name="email" placeholder="Email">
         </div>
@@ -158,7 +160,7 @@ $_SESSION['login_attempts']++;
             <p style="color: red; font-size: 10px"><br>Password must be at least 8 characters long.</p>
         <?php endif; ?>
         </div>
-        <button type="submit" id="button" name="resetPassword">Reset password</button><br>
+        <button type="submit" id="button" name="resetPassword">Update</button><br>
 
         <?php 
         if (hasExceededLoginAttempts() && !isLoginAttemptAllowed()): ?>

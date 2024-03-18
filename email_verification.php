@@ -43,7 +43,7 @@
       min-height: 100vh;
       text-rendering: optimizeSpeed;
       line-height: 1.5;
-      background: linear-gradient(90deg, #ecffdc, #749f8d);
+      background: #ffebcd;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -85,9 +85,6 @@
         scroll-behavior: auto !important;
       }
     }
-
-    
-
     body {
         font-family: "Poppins", san-serif;
     }
@@ -115,7 +112,7 @@
     a {
       font-weight: bold;
       text-decoration: none;
-      color: var(--clr-accent, #385b4f);
+      color: var(--clr-accent, #333);
     }
 
     .code {
@@ -171,9 +168,10 @@
       outline: none;
       border: none;
       width: 90%;
-      color: #fff;
+      color: #333;
+      font-weight:bold;
       cursor: pointer;
-      background: #385b4f;
+      background: #ffebcd;
     }
 
     button:hover {

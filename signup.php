@@ -19,7 +19,7 @@ session_start();
   }
  
   body{
-    background: linear-gradient(90deg, #ecffdc, #749f8d);
+    background: #ffebcd;
   }
  
   .wrapper{
@@ -56,9 +56,10 @@ session_start();
     outline: none;
     border: none;
     width: 90%;
-    color: #fff;
+    color: #333;
+    font-weight: bold;
     cursor: pointer;
-    background: #385b4f;
+    background: #ffebcd;
   }
   button:hover{
     background: #A9A9A9;
@@ -80,7 +81,8 @@ session_start();
     font-size: 0.7rem;
   }
   .terms a{
-    color: #385b4f;
+    color: #333;
+    font-weight: bold;
     text-decoration: none;
   }
   .member{
@@ -89,7 +91,7 @@ session_start();
     color: #636363;
   }
   .member a{
-    color: #385b4f;
+    color: #333;
     text-decoration: none;
   }
 
