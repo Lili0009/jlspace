@@ -1,5 +1,51 @@
 <?php
 session_start();
+// Function to check if the email is registered
+function isEmailRegistered($email) {
+    // Replace this with your own logic to check if the email is registered
+    $registeredEmails = ['user1@example.com', 'user2@example.com']; // Example of registered emails
+    return in_array($email, $registeredEmails);
+}
+
+if (isset($_POST['resetPassword'])) {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $confirmPassword = $_POST['confirmPassword'];
+
+     // Check if any field is empty
+     if (empty($email) || empty($password) || empty($confirmPassword)) {
+        header("Location: reset_password.php?error=emptyfields");
+        exit();
+    }
+
+    // Check if the passwords match
+    if ($password !== $confirmPassword) {
+        header("Location: reset_password.php?error=passwordmismatch");
+        exit();
+    }
+
+    // Check if the password meets the requirements
+    if (!isPasswordValid($password)) {
+        header("Location: reset_password.php?error=passwordrequirements");
+        exit();
+    }
+
+    if (isEmailRegistered($email)) {
+        // Email is registered, allow password reset logic here
+        // For simplicity, we'll just redirect to updated.php
+        header("Location: updated.php");
+        exit();
+    } else {
+        // Email is not registered, redirect back to the form with an error message
+        header("Location: reset_password.php?error=unregisteredemail");
+        exit();
+    }
+}
+
+// Function to check if the password is at least 8 characters long with special characters
+function isPasswordValid($password) {
+    return strlen($password) >= 8 && preg_match('/[!@#$%^&*()\-_=+{};:,<.>ยง~]/', $password);
+}
 if (!isset($_SESSION['login_attempts'])) {
     $_SESSION['login_attempts'] = 0;
 }
@@ -23,10 +69,6 @@ function isLoginAttemptAllowed() {
 function resetLoginAttempts() {
     $_SESSION['login_attempts'] = 0;
     unset($_SESSION['login_timeout']);
-}
-// Function to check if the password is at least 8 characters long
-function isPasswordValid($password) {
-    return strlen($password) >= 8;
 }
 // Increment login attempt counter
 $_SESSION['login_attempts']++;
@@ -139,12 +181,20 @@ $_SESSION['login_attempts']++;
     .back-button:hover {
         background: #A9A9A9;
     }
+    #toggleConfirmPassword {
+    position: absolute;
+    right: 20px; /* Adjust the right position as needed */
+    top: 40%; /* Adjust the top position as needed */
+    transform: translateY(-50%);
+    position:absolute;
+    cursor: pointer;
+}
 </style>
  
 <div class="wrapper">
     <h1>Reset password</h1>
 
-    <form class="form-sign-up" action="includes/reset.inc.php" method="post">
+    <form class="form-sign-up" action="reset_password.php" method="post">
         <div class="password-container">
             <input id="email" type="text" name="email" placeholder="Email">
         </div>
@@ -155,13 +205,25 @@ $_SESSION['login_attempts']++;
         <div class="password-container">
             <input id="confirmPassword" type="password" name="confirmPassword" placeholder="Confirm password">
             <i class="fa fa-eye" id="toggleConfirmPassword"></i>
-            <?php 
-        if (isset($_GET['error']) && $_GET['error'] === 'invalidpassword'): ?>
-            <p style="color: red; font-size: 10px"><br>Password must be at least 8 characters long.</p>
-        <?php endif; ?>
         </div>
-        <button type="submit" id="button" name="resetPassword">Update</button><br>
+        <?php 
+        if (isset($_GET['error']) && $_GET['error'] === 'unregisteredemail'): ?>
+            <p style="color: red; font-size: 10px"><br>Unregistered email.</p>
+        <?php endif; ?>
+        <?php 
+        if (isset($_GET['error']) && $_GET['error'] === 'passwordmismatch'): ?>
+            <p style="color: red; font-size: 10px"><br>Passwords do not match.</p>
+        <?php endif; ?>
+        <?php 
+        if (isset($_GET['error']) && $_GET['error'] === 'passwordrequirements'): ?>
+            <p style="color: red; font-size: 10px"><br>Password must be at least 8 characters long and contain special characters.</p>
+        <?php endif; ?>
+        <?php 
+        if (isset($_GET['error']) && $_GET['error'] === 'emptyfields'): ?>
+        <p style="color: red; font-size: 10px"><br>All fields are required.</p>
+        <?php endif; ?>
 
+        <button type="submit" id="button" name="resetPassword">Update</button><br>
         <?php 
         if (hasExceededLoginAttempts() && !isLoginAttemptAllowed()): ?>
             <p>Login attempts exceeded. Please wait for <?php echo ($_SESSION['login_timeout'] - time()); ?> seconds before trying again.</p>
@@ -169,6 +231,7 @@ $_SESSION['login_attempts']++;
     </form>
 
     <button class="back-button" onclick="goBack()">Cancel</button>
+</div>
 
     <script>
         function goBack() {
@@ -176,41 +239,59 @@ $_SESSION['login_attempts']++;
         }
 
         document.addEventListener('DOMContentLoaded', function () {
-            const passwordInput = document.getElementById('password');
-            const confirmPasswordInput = document.getElementById('confirmPassword');
-            const togglePassword = document.getElementById('togglePassword');
-            const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
+    const togglePassword = document.getElementById('togglePassword');
+    const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
 
-            // Initially, set the password input to 'text' and the eye to 'fa-eye-slash'
-            passwordInput.type = 'password';
-            togglePassword.classList.remove('fa-eye');
-            togglePassword.classList.add('fa-eye-slash');
+    // Initially, set the password input to 'text' and the eye to 'fa-eye-slash'
+    passwordInput.type = 'password';
+    togglePassword.classList.remove('fa-eye');
+    togglePassword.classList.add('fa-eye-slash');
 
-            confirmPasswordInput.type = 'password';
-            toggleConfirmPassword.classList.remove('fa-eye');
-            toggleConfirmPassword.classList.add('fa-eye-slash');
+    confirmPasswordInput.type = 'password';
+    toggleConfirmPassword.classList.remove('fa-eye');
+    toggleConfirmPassword.classList.add('fa-eye-slash');
 
-            togglePassword.addEventListener('click', function () {
-                togglePasswordVisibility(passwordInput, togglePassword);
-            });
+    togglePassword.addEventListener('click', function () {
+        togglePasswordVisibility(passwordInput, togglePassword);
+    });
 
-            toggleConfirmPassword.addEventListener('click', function () {
-                togglePasswordVisibility(confirmPasswordInput, toggleConfirmPassword);
-            });
+    toggleConfirmPassword.addEventListener('click', function () {
+        togglePasswordVisibility(confirmPasswordInput, toggleConfirmPassword);
+    });
 
-            function togglePasswordVisibility(inputField, toggleIcon) {
-                if (inputField.type === 'password') {
-                    inputField.type = 'text';
-                    toggleIcon.classList.remove('fa-eye-slash');
-                    toggleIcon.classList.add('fa-eye');
-                } else {
-                    inputField.type = 'password';
-                    toggleIcon.classList.remove('fa-eye');
-                    toggleIcon.classList.add('fa-eye-slash');
-                }
-            }
+    function togglePasswordVisibility(inputField, toggleIcon) {
+        if (inputField.type === 'password') {
+            inputField.type = 'text';
+            toggleIcon.classList.remove('fa-eye-slash');
+            toggleIcon.classList.add('fa-eye');
+        } else {
+            inputField.type = 'password';
+            toggleIcon.classList.remove('fa-eye');
+            toggleIcon.classList.add('fa-eye-slash');
+        }
+    }
+
+    // Clear error message on password fields when user starts typing
+    passwordInput.addEventListener('input', function () {
+        clearErrorMessage();
+    });
+
+    confirmPasswordInput.addEventListener('input', function () {
+        clearErrorMessage();
+    });
+
+    function clearErrorMessage() {
+        const errorMessages = document.querySelectorAll('.password-container p');
+        errorMessages.forEach(function (errorMessage) {
+            errorMessage.remove();
         });
+    }
+});
+
     </script>
 </div>
 </body>
-      </Html>
+</Html>
+

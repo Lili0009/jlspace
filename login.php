@@ -90,8 +90,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     function proceedToForgotPassword() {
-        // Redirect the user to forgot_password.php
-        window.location.href = 'forgot_password.php';
+        // Redirect the user to reset_password.php
+        window.location.href = 'reset_password.php';
     }
 </script>
     <div class="overlay-container">

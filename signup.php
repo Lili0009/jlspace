@@ -116,18 +116,18 @@ session_start();
     <h1>SIGN UP</h1>
  
     <form class = "form-sign-up" action = "includes/signup.inc.php" method = "post">
-      <input id="text" type="text" name="uname" placeholder = "Username"><br><br>
-      <input id="text" type="text" name="email" placeholder = "Email"><br><br>
+      <input id="text" type="text" name="uname" placeholder="Username" value="<?php echo isset($_GET['uname']) ? $_GET['uname'] : ''; ?>"><br><br>
+      <input id="text" type="text" name="email" placeholder = "Email" value="<?php echo isset($_GET['mail']) ? $_GET['mail'] : ''; ?>"><br><br>
       <input id="text" type="password" name="password" placeholder = "Create Password"><br><br>
       <input id="text" type="password" name="repassword" placeholder="Confirm Password"><br><br>
       <div class="terms">
-      <input type="checkbox" id=checkbox>
+      <input type="checkbox" id="checkbox" required>
       <label for="checkbox">I agree to the <a href="#" id="terms-link">Terms & Conditions</a>.</label>
 
       </div>
       <?php
       if(isset($_GET['error'])){
- 
+        
         if($_GET['error'] == "emptyfields"){
           echo '<p class = "signuperror">Fill in all fields</p>';
         }
@@ -153,10 +153,10 @@ session_start();
           echo '<p class = "signuperror">Email account already in use</p>';
         }
       }
-      if(isset($_GET['signup'])){
+      if(isset($_GET['signup']))
         if($_GET['signup'] == 'success'){
-          echo '<p class = "signup-success">Thank you for signing up!</p>';
-        }
+          header("Location: thankyou.php");
+          exit();
       }
       ?>
  
