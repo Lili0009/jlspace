@@ -192,6 +192,17 @@ if (isset($_SESSION['userId'])) {
         text-transform: none;
     }
 
+.add-btn_desc {
+  width: 30%;
+  text-align: center;
+  background-color: var(--blue);
+  color: var(--white);
+  font-size: 1.7rem;
+  padding: 1.2rem 3rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  margin-top: 1rem;
+}
 /* end of popup for image in products */
 
  /* styling search box */
@@ -332,14 +343,28 @@ if(isset($message)){
          </div>
           
          <div id="popup-<?php echo $fetch_product['product_id']; ?>" class="popup">
-         <div class="popup_inner_wrapper">
-            <span class="close" onclick="closePopup(<?php echo $fetch_product['product_id']; ?>)">&times;</span>
-               <div class="popup-content">
-                  <img src="prod/<?php echo $fetch_product['image']; ?>" alt="Product Image">
-                  <h2><?php echo $fetch_product['product_name']; ?></h2>
-                  <p class="no-capitalization"><?php echo $fetch_product['description_txt']; ?></p>
-               </div>
-         </div>
+            <div class="popup_inner_wrapper">
+               <span class="close" onclick="closePopup(<?php echo $fetch_product['product_id']; ?>)">&times;</span>
+                  <div class="popup-content">
+                     <h2><?php echo $fetch_product['product_name']; ?></h2>
+                     <img src="prod/<?php echo $fetch_product['image']; ?>" alt="Product Image">
+                     <p class="no-capitalization"><?php echo $fetch_product['description_txt']; ?></p>
+                     <?php
+                        if ($fetch_product['total_stocks'] > 0){
+                           if(isset($_SESSION['userUId'])){
+                              if($_SESSION['userUId'] != 'admin'){
+                                 echo '<input type="submit" class="add-btn_desc" value="add to cart" name="add_to_cart">';
+                              }
+                              else if($_SESSION['userUId'] == 'admin'){
+                                 echo '<input type="text" style="background-color:red;" class="add-btn_desc" value="out of stock">';
+                              }
+                           }
+                        }else{
+                           echo '<a ><input  disabled type="text" class="add-btn_desc" value="out of stock" style="background-color:red;"></a>';
+                        }
+                     ?>
+                  </div>
+            </div>
          </div>
 
             <h3><?php echo $fetch_product['product_name']; ?></h3> 
@@ -393,11 +418,38 @@ if(isset($message)){
          while($fetch_product = mysqli_fetch_assoc($select_products)){
       ?>
 
-      <form action="" method="post">
+         <form action="" method="post">
          <div class="box">
-            <div class = "image">
-               <img src="prod/<?php echo $fetch_product['image']; ?>" alt="">
-            </div>    
+         <div class="image">
+            <img src="prod/<?php echo $fetch_product['image']; ?>" alt="Image" onclick="showDescription(<?php echo $fetch_product['product_id']; ?>)">
+         </div>
+          
+         <div id="popup-<?php echo $fetch_product['product_id']; ?>" class="popup">
+            <div class="popup_inner_wrapper">
+               <span class="close" onclick="closePopup(<?php echo $fetch_product['product_id']; ?>)">&times;</span>
+                  <div class="popup-content">
+                     <h2><?php echo $fetch_product['product_name']; ?></h2>
+                     <img src="prod/<?php echo $fetch_product['image']; ?>" alt="Product Image">
+                     <p class="no-capitalization"><?php echo $fetch_product['description_txt']; ?></p>
+                     <?php
+                        if ($fetch_product['total_stocks'] > 0){
+                           if(isset($_SESSION['userUId'])){
+                              if($_SESSION['userUId'] != 'admin'){
+                                 echo '<input type="submit" class="add-btn_desc" value="add to cart" name="add_to_cart">';
+                              }
+                              else if($_SESSION['userUId'] == 'admin'){
+                                 echo '<input type="text" style="background-color:red;" class="add-btn_desc" value="out of stock">';
+                              }
+                           }
+                        }else{
+                           echo '<a ><input  disabled type="text" class="add-btn_desc" value="out of stock" style="background-color:red;"></a>';
+                        }
+                     ?>
+                  </div>
+            </div>
+         </div>
+  
+
             <h3><?php echo $fetch_product['product_name']; ?></h3>
             <div class="price">₱<?php echo number_format($fetch_product['price'], 2, '.',','); ?></div>
             <input type="hidden" name="product_name" value="<?php echo $fetch_product['product_name']; ?>">
@@ -451,9 +503,35 @@ if(isset($message)){
 
       <form action="" method="post">
          <div class="box">
-            <div class = "image">
-               <img src="prod/<?php echo $fetch_product['image']; ?>" alt="">
-            </div>            
+         <div class="image">
+            <img src="prod/<?php echo $fetch_product['image']; ?>" alt="Image" onclick="showDescription(<?php echo $fetch_product['product_id']; ?>)">
+         </div>
+          
+         <div id="popup-<?php echo $fetch_product['product_id']; ?>" class="popup">
+            <div class="popup_inner_wrapper">
+               <span class="close" onclick="closePopup(<?php echo $fetch_product['product_id']; ?>)">&times;</span>
+                  <div class="popup-content">
+                     <h2><?php echo $fetch_product['product_name']; ?></h2>
+                     <img src="prod/<?php echo $fetch_product['image']; ?>" alt="Product Image">
+                     <p class="no-capitalization"><?php echo $fetch_product['description_txt']; ?></p>
+                     <?php
+                        if ($fetch_product['total_stocks'] > 0){
+                           if(isset($_SESSION['userUId'])){
+                              if($_SESSION['userUId'] != 'admin'){
+                                 echo '<input type="submit" class="add-btn_desc" value="add to cart" name="add_to_cart">';
+                              }
+                              else if($_SESSION['userUId'] == 'admin'){
+                                 echo '<input type="text" style="background-color:red;" class="add-btn_desc" value="out of stock">';
+                              }
+                           }
+                        }else{
+                           echo '<a ><input  disabled type="text" class="add-btn_desc" value="out of stock" style="background-color:red;"></a>';
+                        }
+                     ?>
+                  </div>
+            </div>
+         </div>
+     
             <h3><?php echo $fetch_product['product_name']; ?></h3>
             <div class="price">₱<?php echo number_format($fetch_product['price'], 2, '.',','); ?></div>
             <input type="hidden" name="product_name" value="<?php echo $fetch_product['product_name']; ?>">
@@ -505,11 +583,37 @@ if(isset($message)){
          while($fetch_product = mysqli_fetch_assoc($select_products)){
       ?>
 
-      <form action="" method="post">
+         <form action="" method="post">
          <div class="box">
-            <div class = "image">
-               <img src="prod/<?php echo $fetch_product['image']; ?>" alt="">
-            </div>            
+         <div class="image">
+            <img src="prod/<?php echo $fetch_product['image']; ?>" alt="Image" onclick="showDescription(<?php echo $fetch_product['product_id']; ?>)">
+         </div>
+          
+         <div id="popup-<?php echo $fetch_product['product_id']; ?>" class="popup">
+            <div class="popup_inner_wrapper">
+               <span class="close" onclick="closePopup(<?php echo $fetch_product['product_id']; ?>)">&times;</span>
+                  <div class="popup-content">
+                     <h2><?php echo $fetch_product['product_name']; ?></h2>
+                     <img src="prod/<?php echo $fetch_product['image']; ?>" alt="Product Image">
+                     <p class="no-capitalization"><?php echo $fetch_product['description_txt']; ?></p>
+                     <?php
+                        if ($fetch_product['total_stocks'] > 0){
+                           if(isset($_SESSION['userUId'])){
+                              if($_SESSION['userUId'] != 'admin'){
+                                 echo '<input type="submit" class="add-btn_desc" value="add to cart" name="add_to_cart">';
+                              }
+                              else if($_SESSION['userUId'] == 'admin'){
+                                 echo '<input type="text" style="background-color:red;" class="add-btn_desc" value="out of stock">';
+                              }
+                           }
+                        }else{
+                           echo '<a ><input  disabled type="text" class="add-btn_desc" value="out of stock" style="background-color:red;"></a>';
+                        }
+                     ?>
+                  </div>
+            </div>
+         </div>
+       
             <h3><?php echo $fetch_product['product_name']; ?></h3>
             <div class="price">₱<?php echo number_format($fetch_product['price'], 2, '.',','); ?></div>
             <input type="hidden" name="product_name" value="<?php echo $fetch_product['product_name']; ?>">
@@ -562,11 +666,37 @@ if(isset($message)){
          while($fetch_product = mysqli_fetch_assoc($select_products)){
       ?>
 
-      <form action="" method="post">
+         <form action="" method="post">
          <div class="box">
-         <div class = "image">
-               <img src="prod/<?php echo $fetch_product['image']; ?>" alt="">
+         <div class="image">
+            <img src="prod/<?php echo $fetch_product['image']; ?>" alt="Image" onclick="showDescription(<?php echo $fetch_product['product_id']; ?>)">
+         </div>
+          
+         <div id="popup-<?php echo $fetch_product['product_id']; ?>" class="popup">
+            <div class="popup_inner_wrapper">
+               <span class="close" onclick="closePopup(<?php echo $fetch_product['product_id']; ?>)">&times;</span>
+                  <div class="popup-content">
+                     <h2><?php echo $fetch_product['product_name']; ?></h2>
+                     <img src="prod/<?php echo $fetch_product['image']; ?>" alt="Product Image">
+                     <p class="no-capitalization"><?php echo $fetch_product['description_txt']; ?></p>
+                     <?php
+                        if ($fetch_product['total_stocks'] > 0){
+                           if(isset($_SESSION['userUId'])){
+                              if($_SESSION['userUId'] != 'admin'){
+                                 echo '<input type="submit" class="add-btn_desc" value="add to cart" name="add_to_cart">';
+                              }
+                              else if($_SESSION['userUId'] == 'admin'){
+                                 echo '<input type="text" style="background-color:red;" class="add-btn_desc" value="out of stock">';
+                              }
+                           }
+                        }else{
+                           echo '<a ><input  disabled type="text" class="add-btn_desc" value="out of stock" style="background-color:red;"></a>';
+                        }
+                     ?>
+                  </div>
             </div>
+         </div>
+
             <h3><?php echo $fetch_product['product_name']; ?></h3>
             <div class="price">₱<?php echo number_format($fetch_product['price'], 2, '.',','); ?></div>
             <input type="hidden" name="product_name" value="<?php echo $fetch_product['product_name']; ?>">
