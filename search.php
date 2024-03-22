@@ -21,6 +21,30 @@ if(isset($_POST['add_to_cart'])){
 
 
 }
+
+if (isset($_SESSION['userId'])) {
+   $id = $_SESSION['userId'];
+
+   
+   $cartct = mysqli_query($con, "SELECT * FROM cart WHERE customer_id = $id");
+   $ct = mysqli_num_rows($cartct);
+
+   
+   if ($_SESSION['userUId'] == 'admin') {
+       $orderct = mysqli_query($con, "SELECT * FROM orders where CAST(date AS DATE) = CAST( curdate() AS DATE) AND order_status = 'Pending'");
+       $order_count = mysqli_num_rows($orderct);
+   } else {
+       $order_count = 0; 
+   }
+
+} else {
+   $ct = ' ';
+   $order_count = ' ';
+
+   echo "<script>
+       location.replace('login.php')
+       </script>";
+}
 ?>
 
 
@@ -99,42 +123,82 @@ if(isset($_POST['add_to_cart'])){
   .popup {
    display: none;
     position: fixed;
+    width: 100%;
+    height: 100vh;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    z-index: 9999;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    animation: zoomIn 0.7s forwards;
+    }
+
+    @keyframes zoomIn {
+        from {
+            transform: translate(-50%, -50%) scale(0);
+        }
+        to {
+            transform: translate(-50%, -50%) scale(1);
+        }
+    }
+.popup-content {
+   text-align: center;
+}
+.popup img {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 15px;
+}
+
+.popup h2 {
+   margin-top: 0;
+   font-size: 1.5em;
+}
+
+.popup p {
+   margin-bottom: 20px;
+   font-size: 1em;
+   line-height: 1.5;
+}
+
+.popup_inner_wrapper {
+    position: absolute;
+    width: 50%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: #fff;
-    border: 1px solid #ccc;
-    padding: 10px;
-    z-index: 2;
-}
-.overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black */
-    z-index: 1;
-}
-.show-overlay {
-    display: block;
+    padding: 3rem;
 }
 
-.popup-text {
-    font-size: 14px;
-    color: black;
-}
-
-.show {
-    display: block;
-}
 .close {
-  position: absolute;
-  top: 5px;
-  right: 10px;
+   position: absolute;
+   top: 5px;
+   right: 15px;
+   color: #888;
+   font-size: 35px;
+   cursor: pointer;
+}
+
+.popup.fadeIn {
+    opacity: 1;
+}
+.no-capitalization {
+        text-transform: none;
+    }
+
+.add-btn_desc {
+  width: 30%;
+  text-align: center;
+  background-color: var(--blue);
+  color: var(--white);
+  font-size: 1.7rem;
+  padding: 1.2rem 3rem;
+  border-radius: 0.5rem;
   cursor: pointer;
-  color: black;
+  margin-top: 1rem;
 }
 /* end of popup for image in products */
 
@@ -274,16 +338,38 @@ if (isset($_GET['query'])) {
          while($fetch_product = mysqli_fetch_assoc($select_products)){
       ?>
 
-      <form action="" method="post">
+<form action="" method="post">
          <div class="box">
-            <div class="image">
-               <img src="prod/<?php echo $fetch_product['image']; ?>" alt="Image" onclick="showDescription(<?php echo $fetch_product['product_id']; ?>)">
+         <div class="image">
+            <img src="prod/<?php echo $fetch_product['image']; ?>" alt="Image" onclick="showDescription(<?php echo $fetch_product['product_id']; ?>)">
+         </div>
+          
+         <div id="popup-<?php echo $fetch_product['product_id']; ?>" class="popup">
+            <div class="popup_inner_wrapper">
+               <span class="close" onclick="closePopup(<?php echo $fetch_product['product_id']; ?>)">&times;</span>
+                  <div class="popup-content">
+                     <h2><?php echo $fetch_product['product_name']; ?></h2>
+                     <img src="prod/<?php echo $fetch_product['image']; ?>" alt="Product Image">
+                     <p class="no-capitalization"><?php echo $fetch_product['description_txt']; ?></p>
+                     <?php
+                        if ($fetch_product['total_stocks'] > 0){
+                           if(isset($_SESSION['userUId'])){
+                              if($_SESSION['userUId'] != 'admin'){
+                                 echo '<input type="submit" class="add-btn_desc" value="add to cart" name="add_to_cart">';
+                              }
+                              else if($_SESSION['userUId'] == 'admin'){
+                                 echo '<input type="text" style="background-color:red;" class="add-btn_desc" value="out of stock">';
+                              }
+                           }
+                        }else{
+                           echo '<a ><input  disabled type="text" class="add-btn_desc" value="out of stock" style="background-color:red;"></a>';
+                        }
+                     ?>
+                  </div>
             </div>
-               <div id="popup-<?php echo $fetch_product['product_id']; ?>" class="popup">
-                  <span class="close" id="close-popup">&times;</span>
-                  <p><?php echo $fetch_product['description_txt']; ?></p>
-               </div>
-            <div id="overlay" class="overlay" onclick="hideDescription()"></div>
+         </div>
+
+
             <h3><?php echo $fetch_product['product_name']; ?></h3> 
             <a href = "description.php"><div class="price">₱<?php echo number_format($fetch_product['price'], 2, '.',','); ?></div></a>
             <input type="hidden" name="product_name" value="<?php echo $fetch_product['product_name']; ?>">
@@ -333,26 +419,18 @@ include "footer.php";
 
 <!-- JavaScript to toggle popup display -->
 <script>
-function showDescription(id) {
-    var popup = document.getElementById('popup-' + id);
-    var overlay = document.getElementById('overlay');
-    popup.classList.toggle('show');
-    overlay.classList.toggle('show-overlay');
-}
-const closePopup = document.getElementById('close-popup');
-closePopup.addEventListener('click', () => {
-        termsPopup.style.display = 'none';
-    });
-
-    function hideDescription() {
-    var popup = document.querySelector('.popup.show');
-    var overlay = document.getElementById('overlay');
-    if (popup) {
-        popup.classList.remove('show');
+    function showDescription(productId) {
+        var popup = document.getElementById('popup-' + productId);
+        if (popup) {
+            popup.style.display = 'block';
+            popup.classList.add('fadeIn');
+        }
     }
-    if (overlay) {
-        overlay.classList.remove('show-overlay');
-    }
-}
 
+    function closePopup(productId) {
+        var popup = document.getElementById('popup-' + productId);
+        if (popup) {
+            popup.style.display = 'none';
+        }
+    }
 </script>

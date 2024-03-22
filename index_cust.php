@@ -1,6 +1,17 @@
 <?php 
 	include "header.php";
 ?>
+
+<style>
+   .image{
+   transition: .3s ease-in-out;
+  }
+  .image:hover{
+   transform: scale(1.2);
+   z-index: 2;
+  }
+</style>
+
 <title>Home</title>
 
 <header>
