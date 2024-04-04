@@ -33,11 +33,11 @@ if (isset($_POST['resetPassword'])) {
     if (isEmailRegistered($email)) {
         // Email is registered, allow password reset logic here
         // For simplicity, we'll just redirect to updated.php
-        header("Location: updated.php");
+        header("Location: reset_password.php");
         exit();
     } else {
         // Email is not registered, redirect back to the form with an error message
-        header("Location: reset_password.php?error=unregisteredemail");
+         header("Location: updated.php?error=unregisteredemail");
         exit();
     }
 }
